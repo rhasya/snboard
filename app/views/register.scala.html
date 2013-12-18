@@ -1,0 +1,25 @@
+@(cardForm: Form[Card], cardSetMap: Map[String, String], cardTypeMap: Map[String, String])
+
+@import helper._
+
+@main("register") {
+  @form(routes.Application.regCard()) {
+  	<p>AAA @cardForm("id").value</p>
+    <input type="hidden" id="id" name="id" value="@cardForm("id").value">
+    @inputText(cardForm("name"), '_value -> cardForm("name").value)
+    @select(cardForm("cardTypeId"), options(cardTypeMap))
+    @textarea(cardForm("cardText"), '_value -> cardForm("cardText").value, 'rows -> 10, 'cols -> 40)
+    @select(cardForm("cardSet"), options = options(cardSetMap), '_value -> cardForm("cardSet").value)
+    @inputText(cardForm("cardNumber"), '_value -> cardForm("cardNumber"))
+    <input type="submit" value="Register">
+    <input type="button" id="btnList" value="List">
+  }
+  <script type="text/javascript" src="@routes.Assets.at("javascripts/register.js")"></script>
+  <div id="debug">
+  	<ul>
+    @cardForm.errors.map { e =>
+  	  <li>@e.message</li>
+    }
+    </ul>
+  </div>
+}

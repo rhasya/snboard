@@ -1,0 +1,41 @@
+@(cardList: Seq[Card], cardSetMap: Map[String, String])
+
+@import helper._
+
+@main("list") {
+  <h1>list</h1>
+  <table border="1" cellpadding="2" cellspacing="0">
+    <thead>
+      <th>NAME</th>
+      <th>SET</th>
+      <th>NUMBER</th>
+      <th>COMMAND</th>
+    </thead>
+    <tbody>
+    @cardList.map { card =>
+      <tr>
+        <td><a href="@routes.Application.card(card.id)">@card.name</a></td>
+        <td>@cardSetMap.get(card.cardSet)</td>
+        <td>@card.cardNumber</td>
+        <td>
+            @form(routes.Application.modify(card.id), 'style -> "display: inline;") {
+              <div style="display: inline;">
+                <input type="submit" value="Modify">
+              </div>
+            }
+            @form(routes.Application.delete(card.id), 'style -> "display: inline;", 'id -> "btnDelete") {
+              <div style="display: inline">
+                <input type="submit" value="Delete" style="clear: both;">
+              </div>
+            }
+        </td>
+      </tr>
+    }
+    </tbody>
+  </table>
+  <div>
+    <input type="button" id="btnReg" value="Register">
+  </div>
+
+  <script type="text/javascript" src="@routes.Assets.at("javascripts/list.js")"></script>
+}
