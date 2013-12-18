@@ -22,7 +22,5 @@ object CardType {
     SQL("select id, name from cardtype order by seq").as(cardTypeParser1 *)
   }
   
-  def allData: Map[String, String] = {
-    (Map[String, String]() /: this.all)((m, c) => m + (c.id.toString() -> c.name))
-  }
+  def allData: Map[String, String] = (Map[String, String]() /: this.all)((m, c) => m + (s"{c.id}" -> c.name))
 }

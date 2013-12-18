@@ -9,7 +9,7 @@
     @inputText(cardForm("name"), '_value -> cardForm("name").value)
     @select(cardForm("cardTypeId"), options(cardTypeMap))
     @textarea(cardForm("cardText"), '_value -> cardForm("cardText").value, 'rows -> 10, 'cols -> 40)
-    @select(cardForm("cardSet"), options = options(cardSetMap), '_value -> cardForm("cardSet").value)
+    @select(cardForm("cardSet"), options(cardSetMap), '_value -> cardForm("cardSet").value)
     @inputText(cardForm("cardNumber"), '_value -> cardForm("cardNumber"))
     <input type="submit" value="Register">
     <input type="button" id="btnList" value="List">

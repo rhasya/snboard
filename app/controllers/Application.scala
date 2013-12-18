@@ -25,19 +25,32 @@ object Application extends Controller {
     Redirect(routes.Application.list)
   }
   
+  // List cards
   def list = Action {
   	Ok(views.html.list(Card.all, CardSet.allData))
   }
   
+  // Show a card
   def card(id: Long) = Action {
     val card = Card.getCardById(id)
     Ok(views.html.card(card, CardSet.allData, CardType.allData))
   }
 
+  // Show registration form
   def register = Action {
   	Ok(views.html.register(cardForm, CardSet.allData, CardType.allData))
   }
 
+  // Show modifiy form
+  def modify(id: Long) = Action {
+    // Select card
+    val card : Card = Card.getCardById(id)
+    // Fill form
+    val filledCardForm = cardForm.fill(card)
+    Ok(views.html.register(filledCardForm, CardSet.allData, CardType.allData))
+  }
+  
+  // Register a card
   def regCard = Action { implicit request =>
   	// Form으로부터 자료를 얻는다.
   	cardForm.bindFromRequest.fold(
@@ -51,15 +64,8 @@ object Application extends Controller {
   	  }
   	)
   }
-  
-  def modify(id: Long) = Action {
-    // Select card
-    val card : Card = Card.getCardById(id)
-    // Fill form
-    val filledCardForm = cardForm.fill(card)
-    Ok(views.html.register(filledCardForm, CardSet.allData, CardType.allData))
-  }
-  
+
+  // Delete a card
   def delete(id: Long) = Action {
     Card.deleteCard(id)
     Redirect(routes.Application.list)

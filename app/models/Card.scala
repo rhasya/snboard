@@ -16,29 +16,27 @@ case class Card(
   cardNumber: Int,
   cardTypeId: Int
 ) {
-  def getParam() : Seq[(Any, ParameterValue[_])] =
-    Seq("id" -> id, 
-        "name" -> name, 
-        "cardText" -> cardText, 
-        "cardSet" -> cardSet, 
-        "cardNumber" -> cardNumber,
-        "cardTypeId" -> cardTypeId)
+  def getParam() : Seq[(Any, ParameterValue[_])] = {
+    this.getClass().getDeclaredFields() map { f =>
+      f.setAccessible(true)
+      f.getName -> toParameterValue(f.get(this))
+    }
+  }
 }
 
-/* OBJECT */
 object Card {
-  /* PARSER 1 */
-  val cardParser1 = long("id") ~ str("name") ~ str("card_text") ~ str("card_set") ~ int("card_number") ~ int("card_type_id") map {
-    case id~name~cardText~cardSet~cardNumber~cardTypeId
-    	=> Card(id, name, cardText, cardSet, cardNumber, cardTypeId)
-  }
-  
+  /** PARSER 1 */
+  val cardParser1 = 
+    long("id") ~ str("name") ~ str("card_text") ~ str("card_set") ~ int("card_number") ~ int("card_type_id") map {
+      case id~name~cardText~cardSet~cardNumber~cardTypeId
+    	  => Card(id, name, cardText, cardSet, cardNumber, cardTypeId)
+    }
   
   /**
    * Get all data
    */
   def all: Seq[Card] = DB.withConnection { implicit conn =>
-    SQL("select id, name, card_text, card_set, card_number, card_type_id from card").as(cardParser1 *)
+    SQL("select * from card").as(cardParser1 *)
   }
 
   /**
@@ -46,8 +44,7 @@ object Card {
    * @param id Card ID
    */
   def getCardById(id: Long): Card = DB.withConnection { implicit conn =>
-    SQL("""select id, name, card_text, card_set, card_number, card_type_id
-        from card where id = {id}""").on('id -> id).as(cardParser1.single)
+    SQL("""select * from card where id = {id}""").on('id -> id).as(cardParser1.single)
   }
   
   /**

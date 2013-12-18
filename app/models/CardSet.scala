@@ -21,9 +21,5 @@ object CardSet {
     SQL("select card_set, card_set_name from cardset order by seq").as(cardSetParser *)
   }
   
-  def allData: Map[String, String] = {
-    val resultMap = Map[String, String]()
-    
-    (resultMap /: this.all)((m, c) => m + (c.cardSet -> c.cardSetName))
-  }
+  def allData: Map[String, String] = (Map[String, String]() /: all)((m, c) => m + (c.cardSet -> c.cardSetName))
 }
