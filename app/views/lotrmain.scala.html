@@ -1,0 +1,15 @@
+@(param: Any)
+
+@main("LOTR::Main") {
+<h1>Main</h1>
+<input type="button" value="New" id="btn_new">
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#btn_new").click(function() {
+	// Move to register window
+	window.location.href = "@routes.LotrCtrl.newCard()";
+  });
+});
+</script>
+}
