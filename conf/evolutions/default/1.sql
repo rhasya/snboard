@@ -1,36 +1,38 @@
 # Auto Evolutions
 # --- !Ups
-create sequence seq_card_id;
-create sequence seq_cardtype_id;
-
-create table card (
-  id integer default nextval('seq_card_id') primary key,
+create sequence seq_lotr_card_id;
+create table lotr_card (
+  id integer default nextval('seq_lotrcard_id') primary key,
   name varchar(255) not null,
-  card_text varchar(2048),
-  card_set varchar(10) not null,
-  card_number integer not null,
-  card_type_id integer
+  type_id_01 integer not null,
+  type_id_02 integer,
+  sphere_id integer not null,
+  threat_cost integer,
+  will_threat integer,
+  attack integer,
+  defence integer,
+  hitpoint integer,
+  card_text varchar(1024) not null,
+  flavor_text varchar(1024),
+  set_id integer not null,
+  number integer not null,
+  quantity integer default 3,
+  illustrator varchar(128)
 );
 
-/* DEFINE CARD-SET */
-create table cardset (
-  card_set varchar(10) primary key,
-  card_set_name varchar(255) not null,
-  seq number not null
+create table lotr_type (
+  id integer primary key,
+  name varchar(128)
 );
 
-/* DEFINE CARD TYPE */
-create table cardtype (
-  id integer default nextval('seq_cardtype_id') primary key,
-  name varchar(255) not null,
-  seq number not null
+create table lotr_sphere (
+  id integer primary key,
+  name varchar(128)
 )
 
 # --- !Downs
-drop table cardtype;
-drop table cardset;
-drop table card;
+drop table lotr_sphere;
+drop table lotr_type;
+drop table lotr_card;
 
-drop sequence seq_cardtype_id;
-drop sequence seq_card_id;
-
+drop sequence seq_lotr_card_id;
