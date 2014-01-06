@@ -1,9 +1,28 @@
-@(cnt: Long)
+@(cardList: List[LotrCard01])
 
 @main("LOTR::Main") {
 <h1>Main</h1>
-<h3>@cnt</h3>
-<input type="button" value="New" id="btn_new">
+<div>
+  <table border="1" cellspacing="0">
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>cardTypeId01</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for(card <- cardList) {
+    <tr>
+    	<td><a href="@routes.LotrCtrl.card(card.id)">@card.name</a></td>
+    	<td>@card.typeName01</td>
+    </tr>
+    }
+  </tbody>
+  </table>
+</div>
+<div id="control">
+  <input type="button" value="New" id="btn_new">
+</div>
 
 <script type="text/javascript">
 $(document).ready(function() {

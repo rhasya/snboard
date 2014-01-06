@@ -6,6 +6,8 @@ libraryDependencies ++= Seq(
   jdbc,
   anorm,
   cache
-)     
+)
+
+scalacOptions += "-feature"
 
 play.Project.playScalaSettings

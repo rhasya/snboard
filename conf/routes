@@ -12,3 +12,6 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 GET     /lotr                       controllers.LotrCtrl.list
 GET     /lotr/card/new              controllers.LotrCtrl.newCard
 POST    /lotr/card/save             controllers.LotrCtrl.save
+GET     /lotr/card/:id              controllers.LotrCtrl.card(id: Long)
+GET     /lotr/card/modify/:id       controllers.LotrCtrl.modifyCard(id: Long)
+POST    /lotr/card/delete/:id       controllers.LotrCtrl.delete(id: Long)

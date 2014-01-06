@@ -1,0 +1,59 @@
+@(card: LotrCard01)
+@import helper._
+@main("Card") {
+<div>
+  <table border="1" cellspacing="0">
+    <tr>
+      <th>Name</th>
+      <td>@card.name</td>
+    </tr>
+    <tr>
+      <th>Type</th>
+      <td>@card.typeName01</td>
+    </tr>
+    <tr>
+      <th>Sphere</th>
+      <td>@card.sphereName</td>
+    </tr>
+    <tr>
+      <th>@if(card.typeId01 == 1) {Threat} else {Cost}</th>
+      <td>@card.threatCost</td>
+    </tr>
+    <tr>
+      <th>Text</th>
+      <td>@Html(card.cardText)</td>
+    </tr>
+    <tr>
+      <th>Set Name</th>
+      <td>@card.setName</td>
+    </tr>
+    <tr>
+      <th>Number</th>
+      <td>@card.number</td>
+    </tr>
+  </table>
+</div>
+<div>
+  <input type="button" id="btn_modify" value="Modify">
+  <input type="button" id="btn_delete" value="Delete">
+  <input type="button" id="btn_cancel" value="Cancel">
+</div>
+@form(routes.LotrCtrl.delete(card.id), 'id -> "form_delete") {
+  <input type="hidden" id="id" name="id" value="@card.id">
+}
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#btn_modify").click(function() {
+		window.location.href = "/lotr/card/modify/@card.id"
+	});
+	$("#btn_delete").click(function() {
+		if (confirm("Are you sure?")) {
+			$("#form_delete").submit();
+		}
+	});
+	$("#btn_cancel").click(function() {
+		window.location.href = "/lotr";
+	});
+});
+</script>
+}

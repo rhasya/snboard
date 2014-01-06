@@ -10,7 +10,7 @@
 <h1>Edit card</h1>
 <div>
 @form(routes.LotrCtrl.save()) {
-  <input type="hidden" name="id">
+  <input type="hidden" name="id" value="@cardForm("id").value">
   @inputText(cardForm("name"))
   @select(cardForm("typeId01"), typeSeq)
   @select(cardForm("sphereId"), sphereSeq)
