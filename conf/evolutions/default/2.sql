@@ -18,6 +18,10 @@ insert into lotr_sphere values
   (5, 'Neutral')
 ;
 
+insert into lotr_set values
+  (1, 'Core', 1)
+;
+
 # --- !Downs
 delete from lotr_type;
 delete from lotr_sphere;

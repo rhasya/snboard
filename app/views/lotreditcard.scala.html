@@ -1,4 +1,8 @@
-@(cardForm: Form[LotrCard01], typeSeq: Seq[(String, String)])
+@(cardForm: Form[LotrCard01]
+	, typeSeq: Seq[(String, String)]
+	, sphereSeq: Seq[(String, String)]
+	, setSeq: Seq[(String, String)]
+	)
 
 @import helper._
 
@@ -9,15 +13,18 @@
   <input type="hidden" name="id">
   @inputText(cardForm("name"))
   @select(cardForm("typeId01"), typeSeq)
-  @select(cardForm("sphereId"), Nil)
+  @select(cardForm("sphereId"), sphereSeq)
   @inputText(cardForm("threatCost"))
   @textarea(cardForm("cardText"))
-  @select(cardForm("setId"), Nil)
+  @select(cardForm("setId"), setSeq)
   @inputText(cardForm("number"))
   <div>
     <input type="submit" value="Save">
     <input type="button" value="Cancel" id="btn_cancel">
   </div>
+</div>
+<div id="error">
+@cardForm.errors
 </div>
 }
 

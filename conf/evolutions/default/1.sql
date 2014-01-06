@@ -2,7 +2,7 @@
 # --- !Ups
 create sequence seq_lotr_card_id;
 create table lotr_card (
-  id integer default nextval('seq_lotrcard_id') primary key,
+  id integer default nextval('seq_lotr_card_id') primary key,
   name varchar(255) not null,
   type_id_01 integer not null,
   type_id_02 integer,
@@ -28,11 +28,18 @@ create table lotr_type (
 create table lotr_sphere (
   id integer primary key,
   name varchar(128)
-)
+);
+
+create table lotr_set (
+  id integer primary key,
+  name varchar(128),
+  seq integer
+);
 
 # --- !Downs
 drop table lotr_sphere;
 drop table lotr_type;
 drop table lotr_card;
+drop table lotr_set;
 
 drop sequence seq_lotr_card_id;
