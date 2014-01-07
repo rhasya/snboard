@@ -20,8 +20,8 @@
   @inputText(cardForm("attack"))
   @inputText(cardForm("defense"))
   @inputText(cardForm("hitpoint"))
-  @textarea(cardForm("cardText"))
-  @textarea(cardForm("cardTextKo"))
+  @textarea(cardForm("cardText"), 'rows -> 6, 'cols -> 40)
+  @textarea(cardForm("cardTextKo"), 'rows -> 6, 'cols -> 40)
   @select(cardForm("setId"), setSeq)
   @inputText(cardForm("number"))
   <div>
