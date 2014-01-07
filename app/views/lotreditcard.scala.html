@@ -13,9 +13,15 @@
   <input type="hidden" name="id" value="@cardForm("id").value">
   @inputText(cardForm("name"))
   @select(cardForm("typeId01"), typeSeq)
-  @select(cardForm("sphereId"), sphereSeq)
+  @select(cardForm("typeId02"), (null, "") +: typeSeq)
+  @select(cardForm("sphereId"), sphereSeq :+ (null, ""))
   @inputText(cardForm("threatCost"))
+  @inputText(cardForm("willThreat"))
+  @inputText(cardForm("attack"))
+  @inputText(cardForm("defense"))
+  @inputText(cardForm("hitpoint"))
   @textarea(cardForm("cardText"))
+  @textarea(cardForm("cardTextKo"))
   @select(cardForm("setId"), setSeq)
   @inputText(cardForm("number"))
   <div>

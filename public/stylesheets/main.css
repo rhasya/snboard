@@ -1,0 +1,16 @@
+table {
+	border-left: 1px black solid;
+	border-top: 1px black solid;
+}
+
+table.info td {
+	border-right: 1px black solid;
+	border-bottom: 1px black solid;
+	padding: 1px 3px 1px 3px;
+}
+
+table.info th {
+	border-right: 1px black solid;
+	border-bottom: 1px black solid;
+	padding: 1px 3px 1px 3px;
+}

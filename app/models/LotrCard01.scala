@@ -37,28 +37,28 @@ object LotrCard01 {
     int("id") ~
     str("name") ~
     int("type_id_01") ~
-    int("type_id_02") ~
+    get[Option[Int]]("type_id_02") ~
     int("sphere_id") ~
-    str("threat_cost") ~
-    str("will_threat") ~
-    str("attack") ~
-    str("defense") ~
-    str("hitpoint") ~
-    str("card_text") ~
-    str("card_text_ko") ~
-    str("flavor_text") ~
-    str("flavor_text_ko") ~
+    get[Option[String]]("threat_cost") ~
+    get[Option[String]]("will_threat") ~
+    get[Option[String]]("attack") ~
+    get[Option[String]]("defense") ~
+    get[Option[String]]("hitpoint") ~
+    get[Option[String]]("card_text") ~
+    get[Option[String]]("card_text_ko") ~
+    get[Option[String]]("flavor_text") ~
+    get[Option[String]]("flavor_text_ko") ~
     int("set_id") ~
     int("number") ~
-    int("qunatity") ~
-    str("illustrator") map {
+    int("quantity") ~
+    get[Option[String]]("illustrator") map {
     case id~name~typeId01~typeId02~sphereId~threatCost~
     	willThreat~attack~defense~hitpoint~cardText~cardTextKo~
     	flavorText~flavorTextKo~setId~number~quantity~illustrator =>
-    	  LotrCard01(id, name, typeId01, Some(typeId02), sphereId, Some(threatCost),
-    	      Some(willThreat), Some(attack), Some(defense), Some(hitpoint), Some(cardText), 
-    	      Some(cardTextKo), Some(flavorText), Some(flavorTextKo), setId, number, quantity, 
-    	      Some(illustrator))
+    	  LotrCard01(id, name, typeId01, typeId02, sphereId, threatCost,
+    	      willThreat, attack, defense, hitpoint, cardText, 
+    	      cardTextKo, flavorText, flavorTextKo, setId, number, quantity, 
+    	      illustrator)
   }
   
   def getCard(id: Long) = DB.withConnection {implicit con =>
@@ -77,10 +77,37 @@ object LotrCard01 {
   }
   
   def save(card: LotrCard01) {
+    val sql = """
+      insert into lotr_card(
+            name
+          , type_id_01
+          , type_id_02
+          , sphere_id
+          , threat_cost
+          , will_threat
+          , attack
+          , defense
+          , hitpoint
+          , card_text
+          , card_text_ko
+          , set_id
+          , number)
+      values ({name}
+        , {typeId01}
+        , {typeId02}
+        , {sphereId}
+        , {threatCost}
+        , {willThreat}
+        , {attack}
+        , {defense}
+        , {hitpoint}
+        , {cardText}
+        , {cardTextKo}
+        , {setId}
+        , {number})
+      """
     DB.withConnection { implicit con =>
-      SQL("""insert into lotr_card(name, type_id_01, sphere_id, threat_cost, card_text, set_id, number)
-             values ({name}, {typeId01}, {sphereId}, {threatCost}, {cardText}, {setId}, {number})
-          """).on(card.getParam() :_*).executeInsert()
+      SQL(sql).on(card.getParam() :_*).executeInsert()
     }
   }
   
@@ -89,9 +116,15 @@ object LotrCard01 {
       SQL("""update lotr_card set
                name = {name},
                type_id_01 = {typeId01},
+               type_id_02 = {typeId02},
                sphere_id = {sphereId},
                threat_cost = {threatCost},
+               will_threat = {willThreat},
+               attack = {attack},
+               defense = {defense},
+               hitpoint = {hitpoint},
                card_text = {cardText},
+               card_text_ko = {cardTextKo},
                set_id = {setId},
                number = {number}
              where id = {id}""").on(card.getParam():_*).executeUpdate()

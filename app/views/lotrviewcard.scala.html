@@ -2,7 +2,7 @@
 @import helper._
 @main("Card") {
 <div>
-  <table border="1" cellspacing="0">
+  <table cellspacing="0" class="info">
     <tr>
       <th>Name</th>
       <td>@card.name</td>
@@ -20,8 +20,28 @@
       <td>@card.threatCost</td>
     </tr>
     <tr>
+      <th>@if(card.typeId01 == 1) {Willpower} else {Threat}</th>
+      <td>@card.willThreat</td>
+    </tr>
+    <tr>
+      <th>Attack</th>
+      <td>@card.attack</td>
+    </tr>
+    <tr>
+      <th>Defense</th>
+      <td>@card.defense</td>
+    </tr>
+    <tr>
+      <th>Hit Points</th>
+      <td>@card.hitpoint</td>
+    </tr>
+    <tr>
       <th>Text</th>
-      <td>@Html(card.cardText.get)</td>
+      <td>@Html(card.cardText.getOrElse(""))</td>
+    </tr>
+    <tr>
+      <th>Text(KO)</th>
+      <td>@Html(card.cardTextKo.getOrElse(""))</td>
     </tr>
     <tr>
       <th>Set Name</th>
@@ -36,7 +56,7 @@
 <div>
   <input type="button" id="btn_modify" value="Modify">
   <input type="button" id="btn_delete" value="Delete">
-  <input type="button" id="btn_cancel" value="Cancel">
+  <input type="button" id="btn_list" value="List">
 </div>
 @form(routes.LotrCtrl.delete(card.id), 'id -> "form_delete") {
   <input type="hidden" id="id" name="id" value="@card.id">
@@ -51,7 +71,7 @@ $(document).ready(function() {
 			$("#form_delete").submit();
 		}
 	});
-	$("#btn_cancel").click(function() {
+	$("#btn_list").click(function() {
 		window.location.href = "/lotr";
 	});
 });
