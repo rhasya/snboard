@@ -1,4 +1,4 @@
-@(card: LotrCard01)
+@(card: LotrCard02)
 @import helper._
 @main("Card") {
 <div>
@@ -21,7 +21,7 @@
     </tr>
     <tr>
       <th>Text</th>
-      <td>@Html(card.cardText)</td>
+      <td>@Html(card.cardText.get)</td>
     </tr>
     <tr>
       <th>Set Name</th>

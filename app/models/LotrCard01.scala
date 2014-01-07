@@ -11,93 +11,63 @@ import play.api.Play.current
 
 import scala.language.postfixOps
 
-case class LotrCard01(
+case class LotrCard01 (
   id: Int,
   name: String,
   typeId01: Int,
+  typeId02: Option[Int] = None,
   sphereId: Int,
-  threatCost: Option[Int],
-  cardText: String,
+  threatCost: Option[String] = None,
+  willThreat: Option[String] = None,
+  attack: Option[String] = None,
+  defense: Option[String] = None,
+  hitpoint: Option[String] = None,
+  cardText: Option[String] = None,
+  cardTextKo: Option[String] = None,
+  flavorText: Option[String] = None,
+  flavorTextKo: Option[String] = None,
   setId: Int,
   number: Int,
-  typeName01: String = null,
-  sphereName: String = null,
-  setName: String = null
-) {
-  def getParam() = Seq(
-      "id" -> toParameterValue(id),
-      "name" -> toParameterValue(name),
-      "typeId01" -> toParameterValue(typeId01),
-      "sphereId" -> toParameterValue(sphereId),
-      "threatCost" -> toParameterValue(threatCost),
-      "cardText" -> toParameterValue(cardText),
-      "setId" -> toParameterValue(setId),
-      "number" -> toParameterValue(number)
-  )
-}
+  quantity: Int,
+  illustrator: Option[String] = None
+) extends DVO
 
 object LotrCard01 {
-  
-  val rowParser = int("id") ~ 
-    		str("name") ~ 
-    		int("type_id_01") ~
-    		int("sphere_id") ~
-    		int("threat_cost") ~
-    		str("card_text") ~
-    		int("set_id") ~
-    		int("number") ~
-    		str("type_name_01") ~
-    		str("sphere_name") ~
-    		str("set_name") map {
-    case id ~ name ~ typeId01 ~ 
-      sphereId ~ threatCost ~ cardText ~
-      setId ~ number ~ typeName01 ~
-      sphereName ~ setName => {
-        var cardText2 = cardText.replaceAll("\r\n", "<br>")
-        LotrCard01(id, name, typeId01, sphereId, Some(threatCost), cardText2, setId, number, typeName01, sphereName, setName)
-      }
+  val rowParser =
+    int("id") ~
+    str("name") ~
+    int("type_id_01") ~
+    int("type_id_02") ~
+    int("sphere_id") ~
+    str("threat_cost") ~
+    str("will_threat") ~
+    str("attack") ~
+    str("defense") ~
+    str("hitpoint") ~
+    str("card_text") ~
+    str("card_text_ko") ~
+    str("flavor_text") ~
+    str("flavor_text_ko") ~
+    int("set_id") ~
+    int("number") ~
+    int("qunatity") ~
+    str("illustrator") map {
+    case id~name~typeId01~typeId02~sphereId~threatCost~
+    	willThreat~attack~defense~hitpoint~cardText~cardTextKo~
+    	flavorText~flavorTextKo~setId~number~quantity~illustrator =>
+    	  LotrCard01(id, name, typeId01, Some(typeId02), sphereId, Some(threatCost),
+    	      Some(willThreat), Some(attack), Some(defense), Some(hitpoint), Some(cardText), 
+    	      Some(cardTextKo), Some(flavorText), Some(flavorTextKo), setId, number, quantity, 
+    	      Some(illustrator))
   }
   
-  def getForm = Form (
-    mapping(
-      "id" -> default(number, -1),
-      "name" -> text,
-      "typeId01" -> number,
-      "sphereId" -> number,
-      "threatCost" -> optional(number),
-      "cardText" -> text,
-      "setId" -> number,
-      "number" -> number,
-      "typeName01" -> ignored(""),
-      "sphereName" -> ignored(""),
-      "setName" -> ignored("")
-    )(LotrCard01.apply)(LotrCard01.unapply)
-  )
-  
-  def all = DB.withConnection { implicit con =>
-    
-    SQL("""select a.*
-                , b.name as type_name_01
-                , c.name as sphere_name
-                , d.name as set_name
-           from lotr_card a, lotr_type b, lotr_sphere c, lotr_set d
-           where a.type_id_01 = b.id
-           and a.sphere_id = c.id
-           and a.set_id = d.id
-           order by a.set_id, a.number""").as(rowParser*)
-  }
-  
-  def getCard(id: Long) = DB.withConnection { implicit con =>
-    SQL("""select a.*
-                , b.name as type_name_01
-                , c.name as sphere_name
-                , d.name as set_name
-           from lotr_card a, lotr_type b, lotr_sphere c, lotr_set d
-           where a.type_id_01 = b.id
-           and a.sphere_id = c.id
-           and a.set_id = d.id
-           and a.id = {id}
-           order by a.set_id, a.number""").on("id" -> id).single(rowParser)
+  def getCard(id: Long) = DB.withConnection {implicit con =>
+    val sql = """
+      select a.*
+      from lotr_card a
+      where a.id = {id}"""
+      
+    SQL(sql).on('id -> id).single(rowParser)
   }
   
   def checkUnique(card: LotrCard01) = DB.withConnection { implicit con =>

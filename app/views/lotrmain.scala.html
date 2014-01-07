@@ -1,4 +1,4 @@
-@(cardList: List[LotrCard01])
+@(cardList: List[LotrCard02])
 
 @main("LOTR::Main") {
 <h1>Main</h1>
@@ -6,8 +6,10 @@
   <table border="1" cellspacing="0">
   <thead>
     <tr>
-      <th>name</th>
-      <th>cardTypeId01</th>
+      <th>Name</th>
+      <th>Type Name</th>
+      <th>Set Name</th>
+      <th>Number</th>
     </tr>
   </thead>
   <tbody>
@@ -15,6 +17,8 @@
     <tr>
     	<td><a href="@routes.LotrCtrl.card(card.id)">@card.name</a></td>
     	<td>@card.typeName01</td>
+    	<td>@card.setName</td>
+    	<td>@card.number</td>
     </tr>
     }
   </tbody>

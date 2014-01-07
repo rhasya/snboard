@@ -8,32 +8,53 @@ import play.api.data.Forms._
 import models._
 
 object LotrCtrl extends Controller {
+  
+  val form = Form (
+    mapping(
+      "id" -> default(number, -1),
+      "name" -> nonEmptyText,
+      "typeId01" -> number,
+      "typeId02" -> optional(number),
+      "sphereId" -> number,
+      "threatCost" -> optional(text),
+      "willThreat" -> optional(text),
+      "attack" -> optional(text),
+      "defense" -> optional(text),
+      "hitpoint" -> optional(text),
+      "cardText" -> optional(text),
+      "cardTextKo" -> optional(text),
+      "flavorText" -> optional(text),
+      "flavorTextKo" -> optional(text),
+      "setId" -> number,
+      "number" -> number,
+      "quantity" -> default(number, 3),
+      "illustrator" -> optional(text)
+    )(LotrCard01.apply)(LotrCard01.unapply)
+  )
+  
   // view list
   def list = Action {
-    Ok(views.html.lotrmain(LotrCard01.all))
+    Ok(views.html.lotrmain(LotrCard02.all))
   }
   
   // view new Card
   def newCard = Action {
-    val form = LotrCard01.getForm
     Ok(views.html.lotreditcard(form, LotrType.all, LotrSphere.all, LotrSet.all))
   }
   
   // view modify Card
   def modifyCard(id: Long) = Action {
-    var form = LotrCard01.getForm
-    form = form.fill(LotrCard01.getCard(id))
-    Ok(views.html.lotreditcard(form, LotrType.all, LotrSphere.all, LotrSet.all))
+    val form2 = form.fill(LotrCard01.getCard(id))
+    Ok(views.html.lotreditcard(form2, LotrType.all, LotrSphere.all, LotrSet.all))
   }
   
   // view single Card
   def card(id: Long) = Action {
-    val card = LotrCard01.getCard(id)
+    val card = LotrCard02.getCard(id)
     Ok(views.html.lotrviewcard(card))
   }
   
   def save = Action { implicit request =>
-    val form = LotrCard01.getForm
     form.bindFromRequest.fold(
       errorForm => BadRequest(views.html.lotreditcard(errorForm, LotrType.all, LotrSphere.all, LotrSet.all)),
       success => {
